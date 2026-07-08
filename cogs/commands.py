@@ -58,14 +58,12 @@ class Commands(commands.Cog):
 			await channel.send(embed=embed)
 
 	def mod_check(self, user):
-    if user.id == int(os.getenv('USER_ID')):
-        return True
-    for role in user.roles:
-        if not role:
-            continue
-        if role.name.lower() in ('mods', 'moderators'):
-            return True
-    return False
+    	for role in user.roles:
+        	if not role:
+            	continue
+        	if role.name.lower() in ('mods', 'moderators'):
+            	return True
+    	return False
 
 	@discord.commands.application_command(
 		name = "pings",
