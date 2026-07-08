@@ -57,6 +57,16 @@ class Commands(commands.Cog):
 		if channel:
 			await channel.send(embed=embed)
 
+	def mod_check(user):
+    if user.id == int(os.getenv('USER_ID')):
+        return True
+    for role in user.roles:
+        if not role:
+            continue
+        if role.name.lower() in ('mods', 'moderators'):
+            return True
+    return False
+
 	@discord.commands.application_command(
 		name = "pings",
 		description = "Add a role ping to monitoring"
@@ -64,6 +74,9 @@ class Commands(commands.Cog):
 	@discord.commands.option(name = "ping", description = "Messages will be monitored for pinging this role")
 	async def pings(self, ctx: discord.ApplicationContext, ping: discord.SlashCommandOptionType.role):
 		await ctx.defer(ephemeral = True)
+		if not mod_check:
+			await ctx.respond("Only moderators may use this command.")
+			return
 		monitored_pings = self.get_monitored_pings(ctx.guild)
 		if monitored_pings:
 			monitored_pings = [x[0] for x in monitored_pings]
@@ -84,6 +97,9 @@ class Commands(commands.Cog):
 	@discord.commands.option(name = "role", description = "Users with this role will be monitored")
 	async def roles(self, ctx: discord.ApplicationContext, role: discord.SlashCommandOptionType.role):
 		await ctx.defer(ephemeral = True)
+		if not mod_check:
+			await ctx.respond("Only moderators may use this command.")
+			return
 		monitored_roles = self.get_monitored_roles(ctx.guild)
 		if monitored_roles:
 			monitored_roles = [x[0] for x in monitored_roles]
@@ -102,6 +118,9 @@ class Commands(commands.Cog):
 	)
 	async def rules(self, ctx:discord.ApplicationContext):
 		await ctx.defer(ephemeral = True)
+		if not mod_check:
+			await ctx.respond("Only moderators may use this command.")
+			return
 		monitored_pings = self.get_monitored_pings(ctx.guild)
 		monitored_roles = self.get_monitored_roles(ctx.guild)
 		if not monitored_roles and not monitored_pings:
@@ -128,6 +147,9 @@ class Commands(commands.Cog):
 	@discord.commands.option(name = "channel", description = "Channel to send log messages in (make sure the bot's role has access)")
 	async def logs(self, ctx:discord.ApplicationContext, channel: discord.SlashCommandOptionType.channel):
 		await ctx.defer(ephemeral = True)
+		if not mod_check:
+			await ctx.respond("Only moderators may use this command.")
+			return
 		with sqlite3.connect(DB_PATH) as conn:
 			cur = conn.cursor()
 			try:
@@ -140,6 +162,23 @@ class Commands(commands.Cog):
 			await ctx.respond(f"Modbot will now log actions in <#{channel.id}>.")
 		except:
 			await ctx.respond(f"The bot does not have access to <#{channel.id}>.")
+
+	@discord.commands.application_command(
+		name = "clear",
+		description = "Clear all existing rules"
+	)
+	@discord.commands.option(name = "clear", description = "Clears all monitoring rules")
+	async def logs(self, ctx:discord.ApplicationContext, channel: discord.SlashCommandOptionType.channel):
+		await ctx.defer(ephemeral = True)
+		if not mod_check:
+			await ctx.respond("Only moderators may use this command.")
+			return
+		with sqlite3.connect(DB_PATH) as conn:
+			cur = conn.cursor()
+			cur.execute("DELETE FROM pings WHERE guild_id = ?", (ctx.guild.id, ))
+			cur.execute("DELETE FROM roles WHERE guild_id = ?", (ctx.guild.id, ))
+			conn.commit()
+		await ctx.respond("All rules have been cleared.")
 
 def setup(bot):
 	bot.add_cog(Commands(bot))
