@@ -74,7 +74,7 @@ class Commands(commands.Cog):
 	@discord.commands.option(name = "ping", description = "Messages will be monitored for pinging this role")
 	async def pings(self, ctx: discord.ApplicationContext, ping: discord.SlashCommandOptionType.role):
 		await ctx.defer(ephemeral = True)
-		if not mod_check:
+		if not mod_check(ctx.user):
 			await ctx.respond("Only moderators may use this command.")
 			return
 		monitored_pings = self.get_monitored_pings(ctx.guild)
@@ -97,7 +97,7 @@ class Commands(commands.Cog):
 	@discord.commands.option(name = "role", description = "Users with this role will be monitored")
 	async def roles(self, ctx: discord.ApplicationContext, role: discord.SlashCommandOptionType.role):
 		await ctx.defer(ephemeral = True)
-		if not mod_check:
+		if not mod_check(ctx.user):
 			await ctx.respond("Only moderators may use this command.")
 			return
 		monitored_roles = self.get_monitored_roles(ctx.guild)
@@ -118,7 +118,7 @@ class Commands(commands.Cog):
 	)
 	async def rules(self, ctx:discord.ApplicationContext):
 		await ctx.defer(ephemeral = True)
-		if not mod_check:
+		if not mod_check(ctx.user):
 			await ctx.respond("Only moderators may use this command.")
 			return
 		monitored_pings = self.get_monitored_pings(ctx.guild)
@@ -147,7 +147,7 @@ class Commands(commands.Cog):
 	@discord.commands.option(name = "channel", description = "Channel to send log messages in (make sure the bot's role has access)")
 	async def logs(self, ctx:discord.ApplicationContext, channel: discord.SlashCommandOptionType.channel):
 		await ctx.defer(ephemeral = True)
-		if not mod_check:
+		if not mod_check(ctx.user):
 			await ctx.respond("Only moderators may use this command.")
 			return
 		with sqlite3.connect(DB_PATH) as conn:
@@ -169,7 +169,7 @@ class Commands(commands.Cog):
 	)
 	async def logs(self, ctx:discord.ApplicationContext):
 		await ctx.defer(ephemeral = True)
-		if not mod_check:
+		if not mod_check(ctx.user):
 			await ctx.respond("Only moderators may use this command.")
 			return
 		with sqlite3.connect(DB_PATH) as conn:
