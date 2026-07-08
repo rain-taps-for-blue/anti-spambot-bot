@@ -165,7 +165,7 @@ class Commands(commands.Cog):
 		name = "clear",
 		description = "Clear all monitoring rules"
 	)
-	async def logs(self, ctx:discord.ApplicationContext):
+	async def clear(self, ctx:discord.ApplicationContext):
 		await ctx.defer(ephemeral = True)
 		if not mod_check(ctx.user):
 			await ctx.respond("Only moderators may use this command.")
