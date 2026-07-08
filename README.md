@@ -8,9 +8,12 @@ You can check the existing rules at any time with /rules.
 
 Optionally, you can set the bot to log all ban actions to a channel with /log (make sure the bot has access to that channel).
 
+All commands are locked behind users having a role that matches 'mods' or 'moderators'. The check is not case sensitive, so roles with the name 'Mods' or 'Moderators' will also grant access.
+
 # images
 <img width="309" height="182" alt="image" src="https://github.com/user-attachments/assets/2c840cde-45fc-4bd8-ad1f-6ee1db7b2da0" />
 
 # to-do
-Mod-lock all commands.
-Add command to clear rules.
+~~Mod lock all commands.~~
+
+~~Add command to clear rules.~~
