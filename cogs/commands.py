@@ -158,17 +158,16 @@ class Commands(commands.Cog):
 				cur.execute("UPDATE settings SET log_channel = ? WHERE guild_id = ?", (channel.id, ctx.guild.id))
 			conn.commit()
 		try:
-			await channel.send("Modbot will now log actions in this channel.")
-			await ctx.respond(f"Modbot will now log actions in <#{channel.id}>.")
+			await channel.send(f"<@{self.bot.user.id}> will now log actions in this channel.")
+			await ctx.respond(f"<@{self.bot.user.id}> will now log actions in <#{channel.id}>.")
 		except:
-			await ctx.respond(f"The bot does not have access to <#{channel.id}>.")
+			await ctx.respond(f"<@{self.bot.user.id}> does not have access to <#{channel.id}>.")
 
 	@discord.commands.application_command(
 		name = "clear",
-		description = "Clear all existing rules"
+		description = "Clear all monitoring rules"
 	)
-	@discord.commands.option(name = "clear", description = "Clears all monitoring rules")
-	async def logs(self, ctx:discord.ApplicationContext, channel: discord.SlashCommandOptionType.channel):
+	async def logs(self, ctx:discord.ApplicationContext):
 		await ctx.defer(ephemeral = True)
 		if not mod_check:
 			await ctx.respond("Only moderators may use this command.")
