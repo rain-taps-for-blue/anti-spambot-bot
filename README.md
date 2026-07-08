@@ -2,9 +2,9 @@
 Discord bot for banning role-pinging spam bots.
 
 # setup
-After adding the bot to the server, use /roles to add a role to monitoring (this is usually a "new user" role), then /pings to add a ping to monitoring. Any users that use one of the monitored pings while having one of the monitored roles will be banned by the bot.
+After adding the bot to the server (which can be done with [this link](https://discord.com/oauth2/authorize?client_id=1524067132176990228), use /roles to add a role to monitoring (this is usually a "new user" role), then /pings to add a ping to monitoring. Any users that use one of the monitored pings while having one of the monitored roles will be banned by the bot.
 
-You can check the existing rules at any time with /rules.
+You can check the existing rules at any time with /rules. All existing rules can be cleared with /clear.
 
 Optionally, you can set the bot to log all ban actions to a channel with /log (make sure the bot has access to that channel).
 
