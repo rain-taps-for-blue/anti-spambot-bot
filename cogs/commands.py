@@ -57,7 +57,7 @@ class Commands(commands.Cog):
 		if channel:
 			await channel.send(embed=embed)
 
-	def mod_check(user):
+	def mod_check(self, user):
     if user.id == int(os.getenv('USER_ID')):
         return True
     for role in user.roles:
