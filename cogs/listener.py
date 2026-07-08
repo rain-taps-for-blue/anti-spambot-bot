@@ -104,7 +104,7 @@ class Listener(commands.Cog):
 		if monitored_roles and set(monitored_roles).isdisjoint(author_roles):
 			return
 
-		await message.guild.ban(message.author, delete_message_seconds = 300, reason = 'Banned by modbot')
+		await message.guild.ban(message.author, delete_message_seconds = 300, reason = "Banned by rain's modbot")
 
 		#bot log
 		logger.info('Banned user', extra = {
